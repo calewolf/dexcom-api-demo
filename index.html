@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EGV Monitor</title>
+    <script>
+        const egvElement = document.getElementById("egv");
+        const updateInterval = 5;  // Adjust update interval in seconds
+
+        function updateEGV() {
+            fetch("/get_egv_data")
+                .then(response => response.json())
+                .then(data => {
+                    egvElement.textContent = data.egv;
+                });
+        }
+
+        setInterval(updateEGV, updateInterval * 1000);  // Update every 5 seconds
+
+        // Consider error handling and loading indicators for better UX
+    </script>
+</head>
+<body>
+    <h1>EGV Monitor</h1>
+    <p id="egv"></p>
+</body>
+</html>
