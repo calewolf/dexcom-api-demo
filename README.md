@@ -12,3 +12,5 @@ I also made sure that I had the Python extension installed on my VSCode.
 
 Then, I set up a directory with a virtual environment using this doc: https://flask.palletsprojects.com/en/2.3.x/installation/
 
+To run:
+. .venv/bin/activate

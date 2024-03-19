@@ -6,9 +6,9 @@ import os
 app = Flask(__name__)
 app.secret_key = "random_bogus_secret_key"
 
-CLIENT_ID = "paste id here"
-CLIENT_SECRET = "paste secret here"
-REDIRECT_URI = "http://127.0.0.1:5000/authorize"
+CLIENT_ID = ""
+CLIENT_SECRET = ""
+REDIRECT_URI = "http://127.0.0.1:5000/authorize" # Make sure this matches exactly what's in the dexcom site
 
 egv_data = None
 access_token = None
@@ -17,6 +17,8 @@ access_token = None
 def update_egv_data():
     global access_token
     print("Updating EGVs with access token: ", access_token)
+    
+    # TODO: Figure out how to call the Dexcom API to get the actual data you need
     
     url = "https://sandbox-api.dexcom.com/v3/users/self/egvs"
     query = {
@@ -56,7 +58,7 @@ def get_bearer_token(auth_code):
     print(token)
     return token
 
-    
+# In a separate thread, get latest EGVs every 30 seconds
 scheduler = BackgroundScheduler()
 scheduler.add_job(update_egv_data, 'interval', seconds=30)
 scheduler.start()
@@ -65,6 +67,10 @@ scheduler.start()
 def home():
     # print(os.environ["DEXCOM_ACCESS_TOKEN"])
     if access_token:
+        
+        # Periodically call Dexcom API to get the user's latest EGV data
+        # Display that number on a big text box on a webpage
+        # Trigger the Raspberry Pi if it falls above/below thresholds
 
         global egv_data
         if not egv_data:
